@@ -6,10 +6,9 @@
 
 import '@stencil/core';
 
+import '@stencil/router';
 import '@ionic/core';
 import 'ionicons';
-import '@stencil/router';
-import '@stencil/state-tunnel';
 import {
   MatchResults,
   RouterHistory,
@@ -18,36 +17,47 @@ import {
 
 export namespace Components {
 
-  interface AppHome {}
-  interface AppHomeAttributes extends StencilHTMLAttributes {}
+  interface AppHome {
+    'history': RouterHistory;
+  }
+  interface AppHomeAttributes extends StencilHTMLAttributes {
+    'history'?: RouterHistory;
+  }
 
   interface AppProfile {
-    'name': string;
+    'history': RouterHistory;
+    'match': MatchResults;
   }
   interface AppProfileAttributes extends StencilHTMLAttributes {
-    'name'?: string;
+    'history'?: RouterHistory;
+    'match'?: MatchResults;
   }
 
   interface AppRoot {}
   interface AppRootAttributes extends StencilHTMLAttributes {}
 
   interface BlogIndex {
-    'getPosts': () => void;
+    'getPosts': () => Promise<{ file: string; title: string; date: string; unique_link: string; }[]>;
     'history': RouterHistory;
+    'routerHistory': RouterHistory;
   }
   interface BlogIndexAttributes extends StencilHTMLAttributes {
     'history'?: RouterHistory;
+    'routerHistory'?: RouterHistory;
   }
+
+  interface BlogPostWrapper {}
+  interface BlogPostWrapperAttributes extends StencilHTMLAttributes {}
 
   interface BlogPost {
     'history': RouterHistory;
     'match': MatchResults;
-    'post': string;
+    'uniqueLink': string;
   }
   interface BlogPostAttributes extends StencilHTMLAttributes {
     'history'?: RouterHistory;
     'match'?: MatchResults;
-    'post'?: string;
+    'uniqueLink'?: string;
   }
 }
 
@@ -57,6 +67,7 @@ declare global {
     'AppProfile': Components.AppProfile;
     'AppRoot': Components.AppRoot;
     'BlogIndex': Components.BlogIndex;
+    'BlogPostWrapper': Components.BlogPostWrapper;
     'BlogPost': Components.BlogPost;
   }
 
@@ -65,6 +76,7 @@ declare global {
     'app-profile': Components.AppProfileAttributes;
     'app-root': Components.AppRootAttributes;
     'blog-index': Components.BlogIndexAttributes;
+    'blog-post-wrapper': Components.BlogPostWrapperAttributes;
     'blog-post': Components.BlogPostAttributes;
   }
 
@@ -93,6 +105,12 @@ declare global {
     new (): HTMLBlogIndexElement;
   };
 
+  interface HTMLBlogPostWrapperElement extends Components.BlogPostWrapper, HTMLStencilElement {}
+  var HTMLBlogPostWrapperElement: {
+    prototype: HTMLBlogPostWrapperElement;
+    new (): HTMLBlogPostWrapperElement;
+  };
+
   interface HTMLBlogPostElement extends Components.BlogPost, HTMLStencilElement {}
   var HTMLBlogPostElement: {
     prototype: HTMLBlogPostElement;
@@ -104,6 +122,7 @@ declare global {
     'app-profile': HTMLAppProfileElement
     'app-root': HTMLAppRootElement
     'blog-index': HTMLBlogIndexElement
+    'blog-post-wrapper': HTMLBlogPostWrapperElement
     'blog-post': HTMLBlogPostElement
   }
 
@@ -112,6 +131,7 @@ declare global {
     'app-profile': HTMLAppProfileElement;
     'app-root': HTMLAppRootElement;
     'blog-index': HTMLBlogIndexElement;
+    'blog-post-wrapper': HTMLBlogPostWrapperElement;
     'blog-post': HTMLBlogPostElement;
   }
 

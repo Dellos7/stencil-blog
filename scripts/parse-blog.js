@@ -27,12 +27,12 @@ const parseBlog = (blogMdDir, blogDir) => {
             try {
                 let date = contentMatter.data.date;
                 let title = contentMatter.data.title;
-                //let file = `${title}_${date.toLocaleDateString()}.html`;
-                let file = `${title}.html`;
-                fs.writeFileSync(`${blogDir}/${file}`, contentMarkdown);
+                let fileNameNoExtension = _file.substring(0,_file.lastIndexOf('.')); 
+                let fileName = fileNameNoExtension + '.html';;
+                fs.writeFileSync(`${blogDir}/${fileName}`, contentMarkdown);
                 i++;
-                file = `${blogDirPath}/${file}`;
-                fileNames.push({ file, title, date });
+                let file = `/${blogDirPath}/${fileName}`;
+                fileNames.push({ file, title, date, unique_link: fileNameNoExtension });
             } catch (err) { console.error(err) }
         });
         if (fileNames && fileNames.length > 0) {

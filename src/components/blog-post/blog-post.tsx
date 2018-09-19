@@ -1,5 +1,5 @@
-import { Component, Prop, State, Watch } from '@stencil/core';
-import { MatchResults, RouterHistory } from '@stencil/router';
+import { Component, Prop, State, Element } from '@stencil/core';
+import { MatchResults, RouterHistory, injectHistory } from '@stencil/router';
 
 
 @Component({
@@ -8,56 +8,85 @@ import { MatchResults, RouterHistory } from '@stencil/router';
 })
 export class BlogPost {
 
+  @Element() el: HTMLStencilElement;
   @Prop() match: MatchResults;
   @Prop() history: RouterHistory;
-  @Prop() post: string;
+
+  file: string;
+  title: string;
+
+  @Prop() uniqueLink: string;
   @State() postContent: string;
 
   componentWillLoad() {
-    this.loadContent();
+    return this.loadContent();
   }
-  
-/*  @Watch('post')
-  async loadContent() {
-    const post = this.match.params.post;
-    console.log('POST');
-    console.log(post);
-    this.post = post;
-    //const fetchRes = await fetch(`/blog/${this.post}`);
-    const fetchRes = await fetch(`/blog/${post}.html`);
-    //const fetchRes = await fetch(`/blog/${post}.html`);
-    if( fetchRes && fetchRes.ok ) {
-      const data = await fetchRes.text();
-      if( data ) {
-        this.postContent = data;
-        console.log(this.postContent);
-      }
-    }
-  }*/
 
-  @Watch('post')
-  async loadContent() {
-    const file = this.history.location.state.file;
-    const title = this.history.location.state.title;
-    console.log('POST');
-    console.log(file);
-    console.log(title);
-    //const fetchRes = await fetch(`/blog/${this.post}`);
-    const fetchRes = await fetch(file);
-    //const fetchRes = await fetch(`/blog/${post}.html`);
-    if( fetchRes && fetchRes.ok ) {
-      const data = await fetchRes.text();
-      if( data ) {
-        this.postContent = data;
-        console.log(this.postContent);
+  getFileName(uniqueLink: string): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      fetch(`/posts.json`)
+        .then(response => response.json())
+        .then(data => {
+          if (data) {
+            console.log(uniqueLink);
+            console.log(data.posts);
+            let filteredPosts = data.posts.filter((post) => {
+              return post.unique_link === uniqueLink;
+            });
+            console.log(filteredPosts);
+            if (filteredPosts && filteredPosts[0]) {
+              resolve(filteredPosts[0].file);
+            }
+            else {
+              reject(`No post with unique link ${uniqueLink} was found.`);
+            }
+          }
+          else {
+            reject(`No post with unique link ${uniqueLink} was found.`);
+          }
+        });
+    });
+  }
+
+  loadContent() {
+    return new Promise((resolve, reject) => {
+      let uniqueLink =
+        this.match && this.match.params && this.match.params.unique_link
+          ? this.match.params.unique_link
+          : null;
+      if (!uniqueLink) {
+        uniqueLink = this.history && this.history.location && this.history.location.state && this.history.location.state.unique_link ? this.history.location.state.unique_link : null;
       }
-    }
+      if( !uniqueLink ) {
+        uniqueLink = this.uniqueLink;
+      }
+      this.getFileName(uniqueLink).then((fileName) => {
+        fetch(fileName)
+          .then(response => response.text())
+          .then(data => {
+            this.postContent = data;
+            resolve();
+          });
+      })
+        .catch(err => {
+          console.error(err);
+          reject(err);
+        });
+    });
   }
 
   render() {
     return [
-      <div><p>hey!! {this.post}</p></div>,
-      <div innerHTML={this.postContent}></div>
+      <stencil-route-link url='/'>
+      &larr;Go back
+    </stencil-route-link>,
+        <slot name="before" />,
+        <div class="blog-post" padding>
+          <div innerHTML={this.postContent}></div>
+        </div>,
+        <slot name="after" />
     ];
   }
 }
+
+injectHistory(BlogPost);
