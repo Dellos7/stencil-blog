@@ -14,7 +14,7 @@ export class BlogIndex {
   }
 
   async indexPosts() {
-    const fetchRes = await fetch(`posts.json`);
+    const fetchRes = await fetch(`/posts.json`);
     if( fetchRes && fetchRes.ok ) {
       const postsJson = await fetchRes.json();
       if( postsJson ) {
@@ -36,7 +36,10 @@ export class BlogIndex {
   render() {
     let rows = [];
     this.posts.forEach(post => {
-      rows.push(<li><a href={post.file}>{post.title}</a> - {post.date}</li>)
+      //rows.push(<li><a href={post.file}>{post.title}</a> - {post.date}</li>)
+      //post.file = 'theblog/' + post.file;
+      post.file = 'theblog/home';
+      rows.push(<li><stencil-route-link url={post.file}>{post.title}- {post.date}</stencil-route-link></li>)
     });
     return(
       <ul>{rows}</ul>

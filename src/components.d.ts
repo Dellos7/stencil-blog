@@ -6,8 +6,13 @@
 
 import '@stencil/core';
 
+import '@stencil/router';
+import '@stencil/state-tunnel';
 import '@ionic/core';
 import 'ionicons';
+import {
+  MatchResults,
+} from '@stencil/router';
 
 
 export namespace Components {
@@ -31,9 +36,11 @@ export namespace Components {
   interface BlogIndexAttributes extends StencilHTMLAttributes {}
 
   interface BlogPost {
+    'match': MatchResults;
     'post': string;
   }
   interface BlogPostAttributes extends StencilHTMLAttributes {
+    'match'?: MatchResults;
     'post'?: string;
   }
 }

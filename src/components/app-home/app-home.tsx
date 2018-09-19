@@ -10,9 +10,11 @@ export class AppHome {
     return [
       <ion-header>
         <ion-toolbar color="primary">
-          <ion-title>Home</ion-title>
+          <ion-title>Home ;)</ion-title>
         </ion-toolbar>
       </ion-header>,
+
+      <blog-index></blog-index>,
 
       <ion-content padding>
         {/*<p>
@@ -23,10 +25,10 @@ export class AppHome {
         </p>
 
         <ion-button href="/profile/ionic" expand="block">Profile page</ion-button>*/}
-        
+        <p>Hi</p>
         <blog-index></blog-index>
-        <blog-post post="Home_2018-9-18.html"></blog-post>
-        <blog-post post="readme_2018-9-18.html"></blog-post>
+        {/*<blog-post post="Home_2018-9-18.html"></blog-post>
+        <blog-post post="readme_2018-9-18.html"></blog-post>*/}
       </ion-content>
     ];
   }
