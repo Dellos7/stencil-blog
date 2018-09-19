@@ -6,12 +6,13 @@
 
 import '@stencil/core';
 
-import '@stencil/router';
-import '@stencil/state-tunnel';
 import '@ionic/core';
 import 'ionicons';
+import '@stencil/router';
+import '@stencil/state-tunnel';
 import {
   MatchResults,
+  RouterHistory,
 } from '@stencil/router';
 
 
@@ -32,14 +33,19 @@ export namespace Components {
 
   interface BlogIndex {
     'getPosts': () => void;
+    'history': RouterHistory;
   }
-  interface BlogIndexAttributes extends StencilHTMLAttributes {}
+  interface BlogIndexAttributes extends StencilHTMLAttributes {
+    'history'?: RouterHistory;
+  }
 
   interface BlogPost {
+    'history': RouterHistory;
     'match': MatchResults;
     'post': string;
   }
   interface BlogPostAttributes extends StencilHTMLAttributes {
+    'history'?: RouterHistory;
     'match'?: MatchResults;
     'post'?: string;
   }
