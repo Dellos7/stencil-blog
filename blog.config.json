@@ -1,0 +1,6 @@
+{
+    "blog_src_dir": "blog-md",
+    "blog_content_dir": "blog",
+    "posts_route": "post",
+    "project_src": "src"
+}

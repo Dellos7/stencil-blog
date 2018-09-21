@@ -1,5 +1,5 @@
-import { Component, State, Method } from '@stencil/core';
-
+import { Component, State, Method, Prop } from '@stencil/core';
+import { RouterHistory } from '@stencil/router';
 
 @Component({
   tag: 'blog-index',
@@ -7,39 +7,29 @@ import { Component, State, Method } from '@stencil/core';
 })
 export class BlogIndex {
 
-  @State() posts: { file: string, title: string, date: string }[] = [];
+  @Prop() routerHistory: RouterHistory;
+  @Prop() history: RouterHistory;
+  
+  @State() posts: { file: string, title: string, date: string, unique_link: string }[] = [];
 
   componentWillLoad() {
-    this.indexPosts();
+    return this.indexPosts();
   }
 
-  async indexPosts() {
-    const fetchRes = await fetch(`posts.json`);
-    if( fetchRes && fetchRes.ok ) {
-      const postsJson = await fetchRes.json();
-      if( postsJson ) {
-        this.posts = postsJson.posts;
-        return this.posts;
-      }
-    }
+  indexPosts() {
+    return fetch(`/posts.json`)
+    .then( response => response.json() )
+    .then( data => this.posts = data.posts );
   }
 
   @Method()
-  getPosts() {
-    if( !this.posts ) {
+  getPosts(): Promise<{ file: string, title: string, date: string, unique_link: string }[]> {
+    return new Promise( (resolve, _) => {
       this.indexPosts().then((posts) => {
-        return posts;
+        this.posts = posts;
+        resolve(posts);
       });
-    }
+    });
   }
 
-  render() {
-    let rows = [];
-    this.posts.forEach(post => {
-      rows.push(<li><a href={post.file}>{post.title}</a> - {post.date}</li>)
-    });
-    return(
-      <ul>{rows}</ul>
-    )
-  }
 }

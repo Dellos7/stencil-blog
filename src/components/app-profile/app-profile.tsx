@@ -1,5 +1,7 @@
-import { Component, Prop, State } from '@stencil/core';
-import { sayHello } from '../../helpers/utils';
+
+import { Component, Prop } from '@stencil/core';
+import { MatchResults, RouterHistory } from '@stencil/router';
+
 
 @Component({
   tag: 'app-profile',
@@ -7,32 +9,33 @@ import { sayHello } from '../../helpers/utils';
 })
 export class AppProfile {
 
-  @State() state = false;
-  @Prop() name: string;
+  @Prop() match: MatchResults;
+  @Prop() history: RouterHistory;
 
   render() {
-    return [
-      <ion-header>
-        <ion-toolbar color="primary">
-          <ion-buttons slot="start">
-            <ion-back-button defaultHref="/" />
-          </ion-buttons>
-          <ion-title>Profile: {this.name}</ion-title>
-        </ion-toolbar>
-      </ion-header>,
-
-      <ion-content padding>
-        <p>
-          {sayHello()}! My name is {this.name}. My name was passed in through a route
-          param!
-        </p>
-
-        <ion-item>
-          <ion-label>Setting ({this.state.toString()})</ion-label>
-          <ion-toggle checked={this.state} onIonChange={(ev) => this.state = ev.detail.checked} />
-        </ion-item>
-
-      </ion-content>
-    ];
+    if (this.match && this.match.params.name) {
+      return (
+        <div class='app-profile'>
+          <p>
+            Hello! My name is {this.match.params.name}.
+            My name was passed in through a route param!
+          </p>
+        </div>
+      );
+    }
+    else if (
+      this.history
+      && this.history.location
+      && this.history.location.state
+      && this.history.location.state.name) {
+      return (
+        <div class='app-profile'>
+          <p>
+            Hello! My name is {this.history.location.state.name}.
+            My name was passed in through router history!
+            </p>
+        </div>
+      );
+    }
   }
 }
