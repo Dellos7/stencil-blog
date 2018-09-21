@@ -1,1 +1,1 @@
-{"posts":[{"file":"/blog/index.html","title":"Home","date":"2018-09-18T00:00:00.000Z","unique_link":"index"},{"file":"/blog/post1.html","title":"readme","date":"2018-09-18T00:00:00.000Z","unique_link":"post1"}]}
+{"posts":[{"unique_link":"index","file":"/blog/index.html","metadata":{"title":"Home","date":"2018-09-18T00:00:00.000Z"}},{"unique_link":"post1","file":"/blog/post1.html","metadata":{"title":"readme","date":"2018-09-18T00:00:00.000Z"}}],"postsRoute":"post"}

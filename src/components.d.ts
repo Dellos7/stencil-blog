@@ -46,19 +46,30 @@ export namespace Components {
     'routerHistory'?: RouterHistory;
   }
 
-  interface BlogPostWrapper {}
-  interface BlogPostWrapperAttributes extends StencilHTMLAttributes {}
+  interface BlogPostWrapper {
+    'metadata': any;
+    'uniqueLink': string;
+  }
+  interface BlogPostWrapperAttributes extends StencilHTMLAttributes {
+    'metadata'?: any;
+    'uniqueLink'?: string;
+  }
 
   interface BlogPost {
     'history': RouterHistory;
     'match': MatchResults;
+    'metadata': string;
     'uniqueLink': string;
   }
   interface BlogPostAttributes extends StencilHTMLAttributes {
     'history'?: RouterHistory;
     'match'?: MatchResults;
+    'metadata'?: string;
     'uniqueLink'?: string;
   }
+
+  interface Blog {}
+  interface BlogAttributes extends StencilHTMLAttributes {}
 }
 
 declare global {
@@ -69,6 +80,7 @@ declare global {
     'BlogIndex': Components.BlogIndex;
     'BlogPostWrapper': Components.BlogPostWrapper;
     'BlogPost': Components.BlogPost;
+    'Blog': Components.Blog;
   }
 
   interface StencilIntrinsicElements {
@@ -78,6 +90,7 @@ declare global {
     'blog-index': Components.BlogIndexAttributes;
     'blog-post-wrapper': Components.BlogPostWrapperAttributes;
     'blog-post': Components.BlogPostAttributes;
+    'blog': Components.BlogAttributes;
   }
 
 
@@ -117,6 +130,12 @@ declare global {
     new (): HTMLBlogPostElement;
   };
 
+  interface HTMLBlogElement extends Components.Blog, HTMLStencilElement {}
+  var HTMLBlogElement: {
+    prototype: HTMLBlogElement;
+    new (): HTMLBlogElement;
+  };
+
   interface HTMLElementTagNameMap {
     'app-home': HTMLAppHomeElement
     'app-profile': HTMLAppProfileElement
@@ -124,6 +143,7 @@ declare global {
     'blog-index': HTMLBlogIndexElement
     'blog-post-wrapper': HTMLBlogPostWrapperElement
     'blog-post': HTMLBlogPostElement
+    'blog': HTMLBlogElement
   }
 
   interface ElementTagNameMap {
@@ -133,6 +153,7 @@ declare global {
     'blog-index': HTMLBlogIndexElement;
     'blog-post-wrapper': HTMLBlogPostWrapperElement;
     'blog-post': HTMLBlogPostElement;
+    'blog': HTMLBlogElement;
   }
 
 

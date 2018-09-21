@@ -1,5 +1,6 @@
-import { Component, Prop, Listen } from '@stencil/core';
+import { Component, Prop, Listen, State } from '@stencil/core';
 import '@stencil/router';
+import BlogService from '../../services/config';
 
 @Component({
   tag: 'app-root',
@@ -7,6 +8,7 @@ import '@stencil/router';
 })
 export class AppRoot {
   
+  @State() postsRoute: string;
   @Prop({ connect: 'ion-toast-controller' }) toastCtrl: HTMLIonToastControllerElement;
 
   /**
@@ -30,6 +32,11 @@ export class AppRoot {
     window.location.reload();
   }
 
+  async componentWillLoad() {
+    const data = await BlogService.readData();
+    this.postsRoute = data.config.posts_route;
+  }
+
   /*render() {
     return (
       <ion-app>
@@ -47,7 +54,7 @@ export class AppRoot {
     return (
       <div>
       <header>
-        <h1>Stencil App Starter</h1>
+        <h1>Blog</h1>
       </header>
 
       <main>
@@ -55,7 +62,14 @@ export class AppRoot {
           <stencil-route-switch scrollTopOffset={0}>
             <stencil-route url='/' component='app-home' exact={true} />
             <stencil-route url='/profile/:name?' component='app-profile' />
-            <stencil-route url='/post/:unique_link' component='blog-post'>
+            {/*<stencil-route url='/post/:unique_link' component='blog-post'>
+            </stencil-route>*/}
+            <stencil-route url={'/' + this.postsRoute + '/:unique_link'}
+              routeRender={(props: { [key: string]: any }) => {
+                return (
+                  <blog-post-wrapper uniqueLink={props.match.params.unique_link} metadata={props.history.location.state}></blog-post-wrapper>
+                );
+              }}>
             </stencil-route>
           </stencil-route-switch>
         </stencil-router>

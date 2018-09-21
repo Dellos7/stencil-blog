@@ -1,4 +1,5 @@
-import { Component } from '@stencil/core';
+import { Component, Prop } from '@stencil/core';
+import BlogService from '../../services/config';
 
 
 @Component({
@@ -7,16 +8,24 @@ import { Component } from '@stencil/core';
 })
 export class BlogPostWrapper {
 
+  @Prop() uniqueLink: string;
+  @Prop({reflectToAttr: true}) metadata: any;
+
+  componentWillLoad() {
+    if( !this.metadata ) this.metadata = BlogService.getMetadataForPost( this.uniqueLink );
+  }
+
   render() {
-    return [
-      <blog-post uniqueLink="index">
-        <p slot="before">Before index</p>
-        <p slot="after">After index</p>
-      </blog-post>,
-      <blog-post uniqueLink="post1">
-        <p slot="before">Before post1</p>
-        <p slot="after">After post1</p>
-      </blog-post>
-    ];
+    if( !this.uniqueLink || !this.metadata ) {
+      return (<div>Loading...</div>);
+    }
+    else {
+      return (
+        <blog-post uniqueLink={this.uniqueLink}>
+          <p slot="before">{this.metadata.title}</p>
+          <p slot="after">Created by David at {this.metadata.date}</p>
+        </blog-post>
+      );
+    }
   }
 }

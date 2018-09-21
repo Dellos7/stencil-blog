@@ -1,5 +1,6 @@
 import { Component, Prop, State, Element } from '@stencil/core';
 import { MatchResults, RouterHistory, injectHistory } from '@stencil/router';
+import BlogService from '../../services/config';
 
 
 @Component({
@@ -12,79 +13,72 @@ export class BlogPost {
   @Prop() match: MatchResults;
   @Prop() history: RouterHistory;
 
-  file: string;
-  title: string;
+  @Prop({ reflectToAttr: true }) uniqueLink: string;
+  @Prop({ reflectToAttr: true }) metadata: string;
 
-  @Prop() uniqueLink: string;
   @State() postContent: string;
 
   componentWillLoad() {
     return this.loadContent();
   }
 
-  getFileName(uniqueLink: string): Promise<string> {
-    return new Promise<string>((resolve, reject) => {
-      fetch(`/posts.json`)
-        .then(response => response.json())
-        .then(data => {
-          if (data) {
-            console.log(uniqueLink);
-            console.log(data.posts);
-            let filteredPosts = data.posts.filter((post) => {
-              return post.unique_link === uniqueLink;
-            });
-            console.log(filteredPosts);
-            if (filteredPosts && filteredPosts[0]) {
-              resolve(filteredPosts[0].file);
-            }
-            else {
-              reject(`No post with unique link ${uniqueLink} was found.`);
-            }
-          }
-          else {
-            reject(`No post with unique link ${uniqueLink} was found.`);
-          }
-        });
-    });
+  private _getUniqueLink() {
+    let uniqueLink = this.match && this.match.params && this.match.params.unique_link
+      ? this.match.params.unique_link
+      : null;
+    if (!uniqueLink) {
+      uniqueLink = this.history && this.history.location && this.history.location.state && this.history.location.state.unique_link ? this.history.location.state.unique_link : null;
+    }
+    if (!uniqueLink) {
+      uniqueLink = this.uniqueLink;
+    }
+    return uniqueLink;
+  }
+
+  private _getMetadata() {
+    let metadata = this.match && this.match.params && this.match.params.metadata
+      ? this.match.params.metadata
+      : null;
+    if (!metadata) {
+      metadata = this.history && this.history.location && this.history.location.state && this.history.location.state.metadata ? this.history.location.state.metadata : null;
+    }
+    if (!metadata) {
+      metadata = this.metadata;
+    }
+    return metadata;
   }
 
   loadContent() {
     return new Promise((resolve, reject) => {
-      let uniqueLink =
-        this.match && this.match.params && this.match.params.unique_link
-          ? this.match.params.unique_link
-          : null;
-      if (!uniqueLink) {
-        uniqueLink = this.history && this.history.location && this.history.location.state && this.history.location.state.unique_link ? this.history.location.state.unique_link : null;
+      this.uniqueLink = this._getUniqueLink();
+      this.metadata = this._getMetadata();
+
+      let fileName = BlogService.getFileForPost(this.uniqueLink);
+      if (!fileName) {
+        console.error(`No post with unique link ${this.uniqueLink} was found.`)
       }
-      if( !uniqueLink ) {
-        uniqueLink = this.uniqueLink;
-      }
-      this.getFileName(uniqueLink).then((fileName) => {
+      else {
         fetch(fileName)
           .then(response => response.text())
           .then(data => {
             this.postContent = data;
             resolve();
-          });
-      })
-        .catch(err => {
-          console.error(err);
-          reject(err);
-        });
-    });
+          })
+          .catch((err) => reject(err));
+      }
+    })
   }
 
   render() {
     return [
       <stencil-route-link url='/'>
-      &larr;Go back
+        &larr;Go back
     </stencil-route-link>,
-        <slot name="before" />,
-        <div class="blog-post" padding>
-          <div innerHTML={this.postContent}></div>
-        </div>,
-        <slot name="after" />
+      <slot name="before" />,
+      <div class="blog-post">
+        <div innerHTML={this.postContent}></div>
+      </div>,
+      <slot name="after" />
     ];
   }
 }
