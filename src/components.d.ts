@@ -7,12 +7,17 @@
 import '@stencil/core';
 
 import '@stencil/router';
+import '@stencil/state-tunnel';
 import '@ionic/core';
 import 'ionicons';
 import {
   MatchResults,
   RouterHistory,
 } from '@stencil/router';
+import {
+  Config,
+  Post,
+} from './model/interfaces';
 
 
 export namespace Components {
@@ -24,26 +29,34 @@ export namespace Components {
     'history'?: RouterHistory;
   }
 
-  interface AppProfile {
-    'history': RouterHistory;
-    'match': MatchResults;
-  }
-  interface AppProfileAttributes extends StencilHTMLAttributes {
-    'history'?: RouterHistory;
-    'match'?: MatchResults;
-  }
-
   interface AppRoot {}
   interface AppRootAttributes extends StencilHTMLAttributes {}
 
-  interface BlogIndex {
-    'getPosts': () => Promise<{ file: string; title: string; date: string; unique_link: string; }[]>;
+  interface BlogComponent {
+    'config': Config;
+    /**
+    * Gets the file (ex. /blog/index.html) that should be fetched in order to show its content
+    */
+    'getFileForPost': (uniqueLink: string) => string;
+    /**
+    * Gets the metadata (front matter) for this post
+    */
+    'getMetadataForPost': (uniqueLink: string) => any;
+    /**
+    * Go to this post using the stencil router
+    */
+    'goToPost': (routerHistory: RouterHistory, post: Post) => void;
     'history': RouterHistory;
-    'routerHistory': RouterHistory;
+    'posts': Post[];
+    /**
+    * Reads the data from the 'posts.json' file and sets it as attribute
+    */
+    'readData': () => Promise<{ config: Config; posts: Post[]; }>;
   }
-  interface BlogIndexAttributes extends StencilHTMLAttributes {
+  interface BlogComponentAttributes extends StencilHTMLAttributes {
+    'config'?: Config;
     'history'?: RouterHistory;
-    'routerHistory'?: RouterHistory;
+    'posts'?: Post[];
   }
 
   interface BlogPostWrapper {
@@ -67,30 +80,23 @@ export namespace Components {
     'metadata'?: string;
     'uniqueLink'?: string;
   }
-
-  interface Blog {}
-  interface BlogAttributes extends StencilHTMLAttributes {}
 }
 
 declare global {
   interface StencilElementInterfaces {
     'AppHome': Components.AppHome;
-    'AppProfile': Components.AppProfile;
     'AppRoot': Components.AppRoot;
-    'BlogIndex': Components.BlogIndex;
+    'BlogComponent': Components.BlogComponent;
     'BlogPostWrapper': Components.BlogPostWrapper;
     'BlogPost': Components.BlogPost;
-    'Blog': Components.Blog;
   }
 
   interface StencilIntrinsicElements {
     'app-home': Components.AppHomeAttributes;
-    'app-profile': Components.AppProfileAttributes;
     'app-root': Components.AppRootAttributes;
-    'blog-index': Components.BlogIndexAttributes;
+    'blog-component': Components.BlogComponentAttributes;
     'blog-post-wrapper': Components.BlogPostWrapperAttributes;
     'blog-post': Components.BlogPostAttributes;
-    'blog': Components.BlogAttributes;
   }
 
 
@@ -100,22 +106,16 @@ declare global {
     new (): HTMLAppHomeElement;
   };
 
-  interface HTMLAppProfileElement extends Components.AppProfile, HTMLStencilElement {}
-  var HTMLAppProfileElement: {
-    prototype: HTMLAppProfileElement;
-    new (): HTMLAppProfileElement;
-  };
-
   interface HTMLAppRootElement extends Components.AppRoot, HTMLStencilElement {}
   var HTMLAppRootElement: {
     prototype: HTMLAppRootElement;
     new (): HTMLAppRootElement;
   };
 
-  interface HTMLBlogIndexElement extends Components.BlogIndex, HTMLStencilElement {}
-  var HTMLBlogIndexElement: {
-    prototype: HTMLBlogIndexElement;
-    new (): HTMLBlogIndexElement;
+  interface HTMLBlogComponentElement extends Components.BlogComponent, HTMLStencilElement {}
+  var HTMLBlogComponentElement: {
+    prototype: HTMLBlogComponentElement;
+    new (): HTMLBlogComponentElement;
   };
 
   interface HTMLBlogPostWrapperElement extends Components.BlogPostWrapper, HTMLStencilElement {}
@@ -130,30 +130,20 @@ declare global {
     new (): HTMLBlogPostElement;
   };
 
-  interface HTMLBlogElement extends Components.Blog, HTMLStencilElement {}
-  var HTMLBlogElement: {
-    prototype: HTMLBlogElement;
-    new (): HTMLBlogElement;
-  };
-
   interface HTMLElementTagNameMap {
     'app-home': HTMLAppHomeElement
-    'app-profile': HTMLAppProfileElement
     'app-root': HTMLAppRootElement
-    'blog-index': HTMLBlogIndexElement
+    'blog-component': HTMLBlogComponentElement
     'blog-post-wrapper': HTMLBlogPostWrapperElement
     'blog-post': HTMLBlogPostElement
-    'blog': HTMLBlogElement
   }
 
   interface ElementTagNameMap {
     'app-home': HTMLAppHomeElement;
-    'app-profile': HTMLAppProfileElement;
     'app-root': HTMLAppRootElement;
-    'blog-index': HTMLBlogIndexElement;
+    'blog-component': HTMLBlogComponentElement;
     'blog-post-wrapper': HTMLBlogPostWrapperElement;
     'blog-post': HTMLBlogPostElement;
-    'blog': HTMLBlogElement;
   }
 
 

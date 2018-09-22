@@ -1,7 +1,7 @@
 import { Config } from '@stencil/core';
+const { sass } = require('@stencil/sass');
 
 // https://stenciljs.com/docs/config
-
 export const config: Config = {
   outputTargets: [
     {
@@ -16,5 +16,12 @@ export const config: Config = {
     { src: 'posts.json' }
   ],
   globalScript: 'src/global/app.ts',
-  globalStyle: 'src/global/app.css'
+  globalStyle: 'src/global/app.scss',
+  plugins: [
+    sass({
+      injectGlobalPaths: [
+        'src/global/app.scss',
+      ]
+    })
+  ]
 };

@@ -1,6 +1,4 @@
 import { Component, Prop } from '@stencil/core';
-import BlogService from '../../services/config';
-
 
 @Component({
   tag: 'blog-post-wrapper',
@@ -9,10 +7,11 @@ import BlogService from '../../services/config';
 export class BlogPostWrapper {
 
   @Prop() uniqueLink: string;
-  @Prop({reflectToAttr: true}) metadata: any;
+  @Prop({mutable: true}) metadata: any;
 
   componentWillLoad() {
-    if( !this.metadata ) this.metadata = BlogService.getMetadataForPost( this.uniqueLink );
+    //Maybe we have not passed the metadata as property, then we load the metadata using the blog-component
+    if( !this.metadata ) this.metadata = (document.querySelector("#the-blog-component") as HTMLBlogComponentElement).getMetadataForPost( this.uniqueLink );
   }
 
   render() {

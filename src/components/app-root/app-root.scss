@@ -1,0 +1,55 @@
+.header {
+    height: 40vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    //box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    //border: 2px solid rgb(73, 199, 198);
+    /*background-image: 
+      radial-gradient(circle 42rem at 50% 100%, rgba($color-white, 1) 24.5%, $color-white 24%, rgba($color-tertiary-light, 0.6) 24%),
+      url(/assets/imgs/header1.jpg);*/
+    background-image: 
+      radial-gradient(circle 42rem at 50% 100%, rgba($color-white, 1) 24.5%, $color-white 24%, rgba($color-tertiary-light, 0.6) 24%),
+      url(/assets/imgs/header1.jpg);
+    clip-path: polygon( 0 0, 100% 0, 100% 38vh, calc(50% + 10rem) 100%, 80% 100vh, 0 60vh );
+    background-size: cover;
+    background-position: center;
+    position: relative;
+
+    &__bottom-image {
+      position: absolute;
+      bottom: 0%;
+      left: 50%;
+      height: 20rem;
+      width: 20rem;
+      transform: translateX(-50%) translateY(50%);
+      border-radius: 100%;
+      overflow: hidden;
+      background-image: 
+        linear-gradient(to right bottom, rgba($color-tertiary-dark, 0.6), rgba($color-tertiary-light, 0.6)),
+        url(/assets/imgs/david.png);
+      background-size: cover;
+      background-blend-mode: color-dodge;
+    }
+
+
+  }
+
+  .heading-primary {
+    color: $color-white; 
+    text-transform: uppercase;
+    
+    &--main {
+      display: block;
+      font-weight: 400;
+      letter-spacing: 1rem;
+    }
+
+    &--sub {
+      font-size: 3rem;
+      display: block;
+      font-weight: 300;
+      letter-spacing: 1.5rem,
+    }
+  }

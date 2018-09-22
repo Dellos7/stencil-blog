@@ -1,13 +1,12 @@
 import { Component, Prop, Listen, State } from '@stencil/core';
 import '@stencil/router';
-import BlogService from '../../services/config';
 
 @Component({
   tag: 'app-root',
-  styleUrl: 'app-root.css'
+  styleUrl: 'app-root.scss'
 })
 export class AppRoot {
-  
+
   @State() postsRoute: string;
   @Prop({ connect: 'ion-toast-controller' }) toastCtrl: HTMLIonToastControllerElement;
 
@@ -32,9 +31,9 @@ export class AppRoot {
     window.location.reload();
   }
 
-  async componentWillLoad() {
-    const data = await BlogService.readData();
-    this.postsRoute = data.config.posts_route;
+  componentDidLoad() {
+    //Obviously we set the postsRoute after the blog-component has loaded
+    this.postsRoute = (document.querySelector("#the-blog-component") as HTMLBlogComponentElement).config.posts_route;
   }
 
   /*render() {
@@ -51,30 +50,36 @@ export class AppRoot {
   }*/
 
   render() {
-    return (
+    return [
       <div>
-      <header>
-        <h1>Blog</h1>
-      </header>
+        <header class="header">
+          <h1 class="heading-primary">
+          <span class="heading-primary--main">David López Castellote</span>
+          <span class="heading-primary--sub">Programmer</span>
+          </h1>
+          <div class="header__bottom-image">
+          </div>
+        </header>
 
-      <main>
-        <stencil-router>
-          <stencil-route-switch scrollTopOffset={0}>
-            <stencil-route url='/' component='app-home' exact={true} />
-            <stencil-route url='/profile/:name?' component='app-profile' />
-            {/*<stencil-route url='/post/:unique_link' component='blog-post'>
-            </stencil-route>*/}
-            <stencil-route url={'/' + this.postsRoute + '/:unique_link'}
-              routeRender={(props: { [key: string]: any }) => {
-                return (
-                  <blog-post-wrapper uniqueLink={props.match.params.unique_link} metadata={props.history.location.state}></blog-post-wrapper>
-                );
-              }}>
-            </stencil-route>
-          </stencil-route-switch>
-        </stencil-router>
-      </main>
-    </div>
-    );
+        <main>
+          <blog-component id="the-blog-component">
+            <stencil-router>
+              <stencil-route-switch scrollTopOffset={0}>
+                <stencil-route url='/' component='app-home' exact={true} />
+                {/* For this route we will render a 'blog-post-wrapper' component
+                    that gets the 'uniqueLink' param so to be able to load the post content */}
+                <stencil-route url={'/' + this.postsRoute + '/:unique_link'}
+                  routeRender={(props: { [key: string]: any }) => {
+                    return (
+                      <blog-post-wrapper uniqueLink={props.match.params.unique_link}></blog-post-wrapper>
+                    );
+                  }}>
+                </stencil-route>
+              </stencil-route-switch>
+            </stencil-router>
+          </blog-component>
+        </main>
+      </div>
+    ];
   }
 }

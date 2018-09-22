@@ -1,6 +1,5 @@
 import { Component, Prop, State, Element } from '@stencil/core';
 import { MatchResults, RouterHistory, injectHistory } from '@stencil/router';
-import BlogService from '../../services/config';
 
 
 @Component({
@@ -13,8 +12,8 @@ export class BlogPost {
   @Prop() match: MatchResults;
   @Prop() history: RouterHistory;
 
-  @Prop({ reflectToAttr: true }) uniqueLink: string;
-  @Prop({ reflectToAttr: true }) metadata: string;
+  @Prop({ mutable: true }) uniqueLink: string;
+  @Prop({ mutable: true }) metadata: string;
 
   @State() postContent: string;
 
@@ -53,7 +52,7 @@ export class BlogPost {
       this.uniqueLink = this._getUniqueLink();
       this.metadata = this._getMetadata();
 
-      let fileName = BlogService.getFileForPost(this.uniqueLink);
+      let fileName = (document.querySelector("#the-blog-component") as HTMLBlogComponentElement).getFileForPost(this.uniqueLink);
       if (!fileName) {
         console.error(`No post with unique link ${this.uniqueLink} was found.`)
       }
