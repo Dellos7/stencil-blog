@@ -1,0 +1,98 @@
+<h1><a href="https://dellos7.github.io/dhtml2pdf/">dhtml2pdf</a></h1>
+<p><strong>dhtml2pdf</strong> is a simple, free and very easy to use PHP API that allows you to
+see, download or get the binary of the PDF generated from the HTML of an URL.</p>
+<p>It uses the <a href="https://github.com/knplabs/snappy">snappy</a> image &amp; PDF from URL generation PHP library,
+which is based in the awesome webkit-based <a href="https://wkhtmltopdf.org/">wkhtmltopdf and wkhtmltoimage</a> CLI.</p>
+<p>Try it out here! :point_right: <a href="https://dhtml2pdf.herokuapp.com/">https://dhtml2pdf.herokuapp.com/</a></p>
+<h1>The API</h1>
+<p>Currently, the API is an PHP-based end point which simply
+allows you to pass as parameter the URL of the HTML page that you want
+to convert to PDF. It's deployed as a <a href="https://www.heroku.com/home">Heroku</a>
+APP so you can use it whenever you want to.</p>
+<p>It's as easy as this:</p>
+<pre><code>https://dhtml2pdf.herokuapp.com/api.php?url=&lt;your_url&gt;&amp;result_type=&lt;result_type&gt;
+</code></pre>
+<p><strong>Params</strong>:</p>
+<ul>
+<li><code>url</code>. The URL of the site you want to convert to PDF. Example: <code>url=https://www.github.com</code></li>
+<li><code>result_type</code>. The way you want to retrieve the generated PDF. Can be
+one of the following:
+<ul>
+<li><code>show</code>. Opens the generated PDF in the browser.</li>
+<li><code>download</code>. Downloads the generated PDF.</li>
+<li><code>binary</code>. Returns the binary content of the generated PDF.</li>
+</ul></li>
+<li><code>file_name</code>. If you choose <code>download</code> in the <code>result_type</code> parameter,
+this is the name of the file that will be downloaded (you must pass the name)
+without the <strong>.pdf</strong> extension.</li>
+</ul>
+<p><strong>Example</strong>:</p>
+<p>This:</p>
+<pre><code>https://dhtml2pdf.herokuapp.com/api.php?url=https://www.github.com&amp;result_type=show
+</code></pre>
+<p>would open the generated PDF from the <code>https://www.github.com</code> site in your browser.</p>
+<h1>Examples</h1>
+<h2>HTML</h2>
+<p>Anchor to show the PDF in a new browser tab:</p>
+<pre><code class="language-html">&lt;a href=&quot;https://dhtml2pdf.herokuapp.com/api.php?url=https://www.github.com&amp;result_type=show&quot; target=&quot;_blank&quot;&gt;Show PDF&lt;/a&gt;
+</code></pre>
+<p>Anchor to download the PDF as <strong>my_pdf.pdf</strong>:</p>
+<pre><code class="language-html">&lt;a href=&quot;https://dhtml2pdf.herokuapp.com/api.php?url=https://www.github.com&amp;result_type=download&amp;file_name=my_pdf&quot; target=&quot;_blank&quot;&gt;Download PDF&lt;/a&gt;
+</code></pre>
+<blockquote>
+<p>PRO TIP: Show or download current page in PDF</p>
+</blockquote>
+<pre><code class="language-html">&lt;a href=&quot;javascript:window.open('https://dhtml2pdf.herokuapp.com/api.php?url='+window.location.href+'&amp;result_type=show', '_blank')&quot; target=&quot;_blank&quot;&gt;Show PDF&lt;/a&gt;
+</code></pre>
+<h2>jQuery</h2>
+<p>Retrieve the binary data of the PDF:</p>
+<pre><code class="language-javascript">$.ajax({
+    type: &quot;GET&quot;,
+    url: &quot;https://dhtml2pdf.herokuapp.com/api.php?url=https://www.github.com&amp;&amp;result_type=binary&quot;,
+    success: function(data){
+        //Prints the PDF binary data in the browser console
+        console.log(data);
+    },
+    error: function(err) {
+        console.log(err);
+    }
+});
+</code></pre>
+<h1>Deploy your own server API</h1>
+<p>If you don't want to depend on a external service as this one, you
+can easily clone the repo and deploy it in your own server. I will show
+how to deploy it in a <a href="https://www.heroku.com/home">Heroku</a> server as it's easy and fast to install and free!</p>
+<p>Clone the repo:</p>
+<pre><code class="language-shell">git clone https://github.com/Dellos7/dhtml2pdf.git
+</code></pre>
+<pre><code class="language-shell">cd dhtml2pdf
+</code></pre>
+<blockquote>
+<p>If you had any troubles following the below instructions, please visit the
+Heroku PHP getting started guide at <a href="https://devcenter.heroku.com/articles/getting-started-with-php#set-up">https://devcenter.heroku.com/articles/getting-started-with-php#set-up</a></p>
+</blockquote>
+<p>Sign up in Heroku: <a href="https://signup.heroku.com/">https://signup.heroku.com/</a></p>
+<p>Download &amp; install Heroku CLI: <a href="https://devcenter.heroku.com/articles/heroku-cli#download-and-install">https://devcenter.heroku.com/articles/heroku-cli#download-and-install</a></p>
+<p>Login in the Heroku CLI:</p>
+<pre><code class="language-shell">heroku login
+</code></pre>
+<p>Create your Heroku APP:</p>
+<pre><code class="language-shell">heroku create &lt;your_app_name&gt;
+</code></pre>
+<p>(your APP name will be deployed then in https://&lt;your_app_name&gt;.herokuapp.com)</p>
+<p>Update &amp; create the composer dependencies:</p>
+<pre><code class="language-shell">composer update
+</code></pre>
+<p>Remove the current git repository and create a Heroku one:</p>
+<pre><code class="language-shell">rm -r .git
+git init
+git remote add heroku https://git.heroku.com/&lt;your_app_name&gt;.git
+git add .
+git commit -m &quot;first commit&quot;
+</code></pre>
+<p>We only need a last command in order to push our APP to heroku, which
+will perform the PHP build and deploy the APP!</p>
+<pre><code class="language-shell">git push -u heroku master
+</code></pre>
+<h1>License</h1>
+<p><a href="https://choosealicense.com/licenses/gpl-3.0/">GPL 3.0 License</a></p>
