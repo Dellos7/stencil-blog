@@ -1,5 +1,5 @@
 .blog-page {
-  background-color: $almost-white;
+  //background-color: $almost-white;
   margin-top: 3px;
   padding: 2rem;
   padding-top: 6rem;
@@ -9,24 +9,24 @@
 
 .posts-list {
   list-style: none;
-
-  &:hover &__item:not(:hover) {
-    //transform: scale(.95);
-  }
+  display: flex;
+  flex-wrap: wrap;
 
   &__item {
     cursor: pointer;
-    margin: 3rem 5rem;
-    transition: .5s all;
-    padding: 1rem;
-    border-left: 2px solid transparent;
+    margin: 2rem;
+    transition: 1s all;
+    padding: 0 1rem 1rem 1rem;
+    border-left: 3px solid transparent;
+    flex: 1 1 40%;
+    border-bottom: 1px solid linear-gradient($blue, $gray);
 
     &:not(:last-child) {
       padding-bottom: 2rem;
     }
 
     &:hover {
-      border-left: 2px solid $blue;
+      border-left: 3px solid $blue;
       //transform: scale(1.05);
     }
 
@@ -34,14 +34,22 @@
 
       &-title {
         color: $blue;
+        font-weight: 300;
+        margin-bottom: .5rem;
+        text-transform: uppercase;
+        letter-spacing: .5rem;
       }
 
       &-date {
         //color: $color-tertiary-light;
+        margin-bottom: .5rem;
+        color: $gray;
+        font-weight: lighter;
+        letter-spacing: .5rem;
       }
 
       &-summary {
-        color: #5f5e5e;
+        font-weight: lighter;
       }
 
     }

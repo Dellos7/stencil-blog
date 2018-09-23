@@ -12,12 +12,30 @@ export class AppHome {
   render() {
     return [
       <div class="home-page">
-        <h2 class="heading-secondary">
-          About me
-        </h2>
-        <p>
-          David López Castellote
-        </p>
+        <div class="home-page__container">
+          <div class="home-page__container--main">
+            <h2 class="heading-secondary">
+              About me
+            </h2>
+            <p class="paragraph">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt adipisci autem illum? Provident nulla culpa, assumenda tenetur sapiente odio hic ad maiores alias cumque eius tempora corrupti voluptate nobis ipsam?
+            </p>
+          </div>
+          <div class="home-page__container--side">
+          <h2 class="heading-secondary">
+              Skills
+          </h2>
+          <p class="paragraph">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt adipisci autem illum? Provident nulla culpa, assumenda tenetur sapiente odio hic ad maiores alias cumque eius tempora corrupti voluptate nobis ipsam?
+            </p>
+            <h2 class="heading-secondary">
+              Languages
+          </h2>
+          <p class="paragraph">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt adipisci autem illum? Provident nulla culpa, assumenda tenetur sapiente odio hic ad maiores alias cumque eius tempora corrupti voluptate nobis ipsam?
+            </p>
+          </div>
+        </div>
       </div>
     ];
   }

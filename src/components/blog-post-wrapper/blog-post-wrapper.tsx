@@ -2,7 +2,7 @@ import { Component, Prop } from '@stencil/core';
 
 @Component({
   tag: 'blog-post-wrapper',
-  styleUrl: 'blog-post-wrapper.css'
+  styleUrl: 'blog-post-wrapper.scss'
 })
 export class BlogPostWrapper {
 
@@ -24,10 +24,22 @@ export class BlogPostWrapper {
     }
     else {
       return (
-        <blog-post uniqueLink={this.uniqueLink}>
-          <p slot="before">{this.metadata.title}</p>
-          <p slot="after">Created by David at {this.formateDate(this.metadata.date)}</p>
-        </blog-post>
+        <div class="blog-post-wrapper">
+          <div class="back-button">
+            <stencil-route-link url="/blog">&larr;Back to blog</stencil-route-link>
+          </div>
+          <blog-post uniqueLink={this.uniqueLink}>
+            <div slot="before">
+            <h2 class="post-title">
+              {this.metadata.title}
+            </h2>
+            <h3 class="post-date">
+              {this.formateDate(this.metadata.date)}
+            </h3>
+            </div>
+            <div class="post-footer" slot="after">Created by David at {this.formateDate(this.metadata.date)}</div>
+          </blog-post>
+        </div>
       );
     }
   }

@@ -70,13 +70,8 @@ export class BlogPost {
 
   render() {
     return [
-      <stencil-route-link url='/blog'>
-        &larr;Go back
-    </stencil-route-link>,
       <slot name="before" />,
-      <div class="blog-post">
-        <div innerHTML={this.postContent}></div>
-      </div>,
+      <div class="blog-post-content" innerHTML={this.postContent}></div>,
       <slot name="after" />
     ];
   }
