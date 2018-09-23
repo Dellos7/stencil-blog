@@ -12,7 +12,7 @@ export const config: Config = {
     }
   ],
   copy: [
-    { src: 'blog/' },
+    { src: '__blog/' },
     { src: 'posts.json' }
   ],
   globalScript: 'src/global/app.ts',

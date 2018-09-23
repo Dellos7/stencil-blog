@@ -50,13 +50,33 @@ export class AppRoot {
   }*/
 
   render() {
+    if( !this.postsRoute ) {
+      return (<blog-component id="the-blog-component"></blog-component>);
+    }
     return [
       <div>
+        <nav class="navigation">
+          <ul class="navigation__list">
+            <li class="navigation__list-item">
+            <stencil-route-link url="/" activeClass="link-active" exact={true}>
+                Home
+              </stencil-route-link>
+            </li>
+            <li class="navigation__list-item">
+              <stencil-route-link url="/blog" activeClass="link-active">
+                Blog
+              </stencil-route-link>
+            </li>
+            <li class="navigation__list-item"><a href="https://github.com/Dellos7/" target="_blank">Github</a></li>
+          </ul>
+        </nav>
         <header class="header">
-          <h1 class="heading-primary">
-          <span class="heading-primary--main">David López Castellote</span>
-          <span class="heading-primary--sub">Programmer</span>
-          </h1>
+          <div class="header__text-box">
+            <h1 class="heading-primary">
+              <span class="heading-primary--main heading-primary--main__anim">David López Castellote</span>
+              <span class="heading-primary--sub heading-primary--sub__anim">Programmer</span>
+            </h1>
+          </div>
           <div class="header__bottom-image">
           </div>
         </header>
@@ -66,8 +86,10 @@ export class AppRoot {
             <stencil-router>
               <stencil-route-switch scrollTopOffset={0}>
                 <stencil-route url='/' component='app-home' exact={true} />
+                <stencil-route url='/blog' component='blog-page' exact={true}/>
                 {/* For this route we will render a 'blog-post-wrapper' component
                     that gets the 'uniqueLink' param so to be able to load the post content */}
+                {/*<stencil-route url={'/' + this.postsRoute + '/:unique_link'}*/}
                 <stencil-route url={'/' + this.postsRoute + '/:unique_link'}
                   routeRender={(props: { [key: string]: any }) => {
                     return (

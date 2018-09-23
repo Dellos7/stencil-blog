@@ -1,6 +1,6 @@
 {
     "blog_src_dir": "blog-md",
-    "blog_content_dir": "blog",
-    "posts_route": "post",
+    "blog_content_dir": "__blog",
+    "posts_route": "blog",
     "project_src": "src"
 }

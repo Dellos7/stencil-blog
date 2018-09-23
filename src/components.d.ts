@@ -7,9 +7,9 @@
 import '@stencil/core';
 
 import '@stencil/router';
-import '@stencil/state-tunnel';
 import '@ionic/core';
 import 'ionicons';
+import '@stencil/state-tunnel';
 import {
   MatchResults,
   RouterHistory,
@@ -59,6 +59,13 @@ export namespace Components {
     'posts'?: Post[];
   }
 
+  interface BlogPage {
+    'history': RouterHistory;
+  }
+  interface BlogPageAttributes extends StencilHTMLAttributes {
+    'history'?: RouterHistory;
+  }
+
   interface BlogPostWrapper {
     'metadata': any;
     'uniqueLink': string;
@@ -87,6 +94,7 @@ declare global {
     'AppHome': Components.AppHome;
     'AppRoot': Components.AppRoot;
     'BlogComponent': Components.BlogComponent;
+    'BlogPage': Components.BlogPage;
     'BlogPostWrapper': Components.BlogPostWrapper;
     'BlogPost': Components.BlogPost;
   }
@@ -95,6 +103,7 @@ declare global {
     'app-home': Components.AppHomeAttributes;
     'app-root': Components.AppRootAttributes;
     'blog-component': Components.BlogComponentAttributes;
+    'blog-page': Components.BlogPageAttributes;
     'blog-post-wrapper': Components.BlogPostWrapperAttributes;
     'blog-post': Components.BlogPostAttributes;
   }
@@ -118,6 +127,12 @@ declare global {
     new (): HTMLBlogComponentElement;
   };
 
+  interface HTMLBlogPageElement extends Components.BlogPage, HTMLStencilElement {}
+  var HTMLBlogPageElement: {
+    prototype: HTMLBlogPageElement;
+    new (): HTMLBlogPageElement;
+  };
+
   interface HTMLBlogPostWrapperElement extends Components.BlogPostWrapper, HTMLStencilElement {}
   var HTMLBlogPostWrapperElement: {
     prototype: HTMLBlogPostWrapperElement;
@@ -134,6 +149,7 @@ declare global {
     'app-home': HTMLAppHomeElement
     'app-root': HTMLAppRootElement
     'blog-component': HTMLBlogComponentElement
+    'blog-page': HTMLBlogPageElement
     'blog-post-wrapper': HTMLBlogPostWrapperElement
     'blog-post': HTMLBlogPostElement
   }
@@ -142,6 +158,7 @@ declare global {
     'app-home': HTMLAppHomeElement;
     'app-root': HTMLAppRootElement;
     'blog-component': HTMLBlogComponentElement;
+    'blog-page': HTMLBlogPageElement;
     'blog-post-wrapper': HTMLBlogPostWrapperElement;
     'blog-post': HTMLBlogPostElement;
   }

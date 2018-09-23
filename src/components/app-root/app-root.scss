@@ -1,25 +1,64 @@
+.navigation {
+  position: absolute;
+  right: 0;
+  z-index: 2;
+  padding: 2rem;
+  color: $color-white;
+  text-align: center;
+
+  &__list {
+    letter-spacing: .3rem;
+
+    &-item {
+      display: inline-block;
+      padding: 0 2rem;
+
+      &:hover {
+        transform: rotate(5deg) scale(1.3);
+        background-color: rgba(30, 92, 151, 0.6);
+        box-shadow: 0 1rem 2rem rgba(#000, .4);
+      }
+
+      & a:link,
+      a:visited {
+        text-decoration: none;
+        color: inherit;
+
+        &.link-active {
+          color: $color-tertiary-light;
+        }
+      }
+
+      & a:hover,
+      a:active {
+        font-weight: bolder;
+      }
+    }
+  }
+
+}
+
 .header {
-    height: 40vh;
+    height: 50vh;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    //box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-    //border: 2px solid rgb(73, 199, 198);
-    /*background-image: 
-      radial-gradient(circle 42rem at 50% 100%, rgba($color-white, 1) 24.5%, $color-white 24%, rgba($color-tertiary-light, 0.6) 24%),
-      url(/assets/imgs/header1.jpg);*/
     background-image: 
-      radial-gradient(circle 42rem at 50% 100%, rgba($color-white, 1) 24.5%, $color-white 24%, rgba($color-tertiary-light, 0.6) 24%),
+      radial-gradient(circle 42rem at 50% 90%, rgba($color-white, 1) 24.5%, $color-white 24%, rgba($color-tertiary-light, 0.6) 24%),
       url(/assets/imgs/header1.jpg);
-    clip-path: polygon( 0 0, 100% 0, 100% 38vh, calc(50% + 10rem) 100%, 80% 100vh, 0 60vh );
     background-size: cover;
     background-position: center;
     position: relative;
 
+    &__text-box {
+      transform: translateY(-5rem);
+      margin: 2rem 5rem;
+    }
+
     &__bottom-image {
       position: absolute;
-      bottom: 0%;
+      bottom: 10%;
       left: 50%;
       height: 20rem;
       width: 20rem;
@@ -31,9 +70,15 @@
         url(/assets/imgs/david.png);
       background-size: cover;
       background-blend-mode: color-dodge;
+      animation: setImage .8s backwards .5s cubic-bezier(0,1.3,.39,1.4);
+      transition: .5s all;
+
+      &:hover {
+        transform: translateX(-50%) translateY(50%) scale(1.2) rotate( (random(15) - 15) * 1deg );
+        box-shadow: 0 1rem 2rem rgba(#000, .4);
+        opacity: 0.8;
+      }
     }
-
-
   }
 
   .heading-primary {
@@ -44,12 +89,66 @@
       display: block;
       font-weight: 400;
       letter-spacing: 1rem;
+      
+      &__anim {
+        animation: textFromLeft .8s .5s ease-in-out;
+      }
     }
 
     &--sub {
       font-size: 3rem;
       display: block;
       font-weight: 300;
-      letter-spacing: 1.5rem,
+      letter-spacing: 1.5rem;
+
+      &__anim {
+        animation: textFromRight .8s .5s ease-in-out;
+      }
+    }
+  }
+
+  @keyframes setImage {
+    0% {
+      opacity: 0;
+      transform: translateX(-50%) translateY(100%);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateX(-50%) translateY(50%);
+    }
+  }
+
+  @keyframes textFromLeft {
+    0% {
+      opacity: 0;
+      transform: translateX(-20rem);
+    }
+
+    90% {
+      justify-content: center;
+      transform: translateX(5rem);
+    }
+
+    100% {
+      opacity: 1;
+      justify-content: center;
+    }
+  }
+
+  @keyframes textFromRight {
+    0% {
+      opacity: 0;
+      transform: translateX(20rem);
+    }
+
+    90% {
+      justify-content: center;
+      transform: translateX(-5rem);
+    }
+
+    100% {
+      opacity: 1;
+      justify-content: center;
     }
   }

@@ -1,5 +1,5 @@
 import { Component, Prop, State, Element } from '@stencil/core';
-import { MatchResults, RouterHistory, injectHistory } from '@stencil/router';
+import { MatchResults, RouterHistory } from '@stencil/router';
 
 
 @Component({
@@ -70,7 +70,7 @@ export class BlogPost {
 
   render() {
     return [
-      <stencil-route-link url='/'>
+      <stencil-route-link url='/blog'>
         &larr;Go back
     </stencil-route-link>,
       <slot name="before" />,
@@ -81,5 +81,3 @@ export class BlogPost {
     ];
   }
 }
-
-injectHistory(BlogPost);

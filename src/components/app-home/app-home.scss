@@ -1,76 +1,12 @@
+.home-page {
+  background-color: $almost-white;
+  margin-top: 3px;
+  padding: 2rem;
+  padding-top: 6rem;
 
+  height: 30rem;
+}
 
-.app-home {
-    padding: 10px;
-    color: rgb(232, 232, 232);
-  }
-
-  .posts-list {
-    list-style: none;
-    /*width: 70vw;*/
-    width: 90%;
-    margin: 0 auto;
-
-    &__item {
-      position: relative;
-      display: flex;
-      flex-wrap: wrap;
-      //justify-content: space-between;
-      justify-content: space-around;
-      align-items: center;
-      padding: .5rem;
-      background-size: cover;
-      margin: 2rem;
-      box-shadow: 0 1.5rem 4rem rgba(#000, .15);
-      border: 1px solid $almost-white;
-
-      &:hover {
-        cursor: pointer;
-        //transform: scale(1.05);
-        border-color: $blue;
-        border-width: 2px;
-      }
-
-      &-info {
-        display: inline-block;
-        margin-left: 2rem;
-        width: 50rem;
-      }
-
-      &-image {
-        /*position: absolute;
-        right: 0;
-        top: 50%;
-        height: 60%;*/
-        margin: 2rem;
-        height: 15rem;
-        width: 20rem;
-        border: 1px solid $almost-white;
-        background-image: 
-          linear-gradient(rgba(#fff, 0.5)),
-          url(https://img.huffingtonpost.com/asset/5b7fdeab1900001d035028dc.jpeg?cache=sixpwrbb1s&ops=1910_1000);
-        background-blend-mode: screen;
-        background-size: cover;
-        background-position: center;
-        /*&-img {
-          height: 100%;
-        }*/
-      }
-
-      &:hover &-image {
-        border: 3px solid $blue;
-      }
-
-      &:hover &-info-title {
-        color: $blue;
-      }
-  
-    }
-
-  }
-
-  @media all and (max-width: 768px) {
-    .posts-list {
-      width: 100%;
-    }
-  }
+.heading-secondary {
+  text-transform: uppercase;
+}

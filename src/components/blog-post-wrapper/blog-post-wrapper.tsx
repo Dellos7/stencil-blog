@@ -14,6 +14,10 @@ export class BlogPostWrapper {
     if( !this.metadata ) this.metadata = (document.querySelector("#the-blog-component") as HTMLBlogComponentElement).getMetadataForPost( this.uniqueLink );
   }
 
+  formateDate( date: string ) {
+    return new Date(date).toLocaleDateString();
+  }
+
   render() {
     if( !this.uniqueLink || !this.metadata ) {
       return (<div>Loading...</div>);
@@ -22,7 +26,7 @@ export class BlogPostWrapper {
       return (
         <blog-post uniqueLink={this.uniqueLink}>
           <p slot="before">{this.metadata.title}</p>
-          <p slot="after">Created by David at {this.metadata.date}</p>
+          <p slot="after">Created by David at {this.formateDate(this.metadata.date)}</p>
         </blog-post>
       );
     }
